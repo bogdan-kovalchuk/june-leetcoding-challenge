@@ -31,6 +31,14 @@ public:
     }
 };
 
+// Comparison:
+//   Copy-next:  O(1) time, O(1) space  — copies next val, skips next node
+//   Shift:      O(k) time, O(1) space  — shifts all trailing vals (k = nodes after target)
+// Edge cases:
+//   - node is the only node (no next)  -> both UB / crash; problem guarantees non-tail
+//   - node is second-to-last           -> copy-next deletes tail correctly
+//   - duplicate values in list         -> both work; identity by pointer, not value
+
 int main() {
     auto *a = new ListNode(4);
     a->next = new ListNode(5);
