@@ -34,6 +34,15 @@ public:
     }
 };
 
+// Comparison:
+//   full sort:      O(n log n) time, O(1) extra  — sorts entire array
+//   nth_element:    O(n) avg time, O(1) extra    — partitions around median only
+// Edge cases:
+//   - n = 2 (minimum): one city A, one city B
+//   - all costs equal: any partition yields same total
+//   - a[i][0] == a[i][1]: person is neutral, assignment doesn't matter
+//   - large values: ensure int doesn't overflow (max ~2e9 for n=100, cost=1e4)
+
 int main() {
     vector<vector<int>> costs = {{259, 770}, {448, 54}, {926, 667}, {184, 139}, {840, 118}, {577, 469}};
     SolutionNthElement s;
