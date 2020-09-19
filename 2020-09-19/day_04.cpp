@@ -30,6 +30,25 @@ public:
     }
 };
 
+class SolutionRecursive {
+public:
+    void reverseString(vector<char> &s) { rev(s, 0, (int)s.size() - 1); }
+    void rev(vector<char> &s, int i, int j) {
+        if (i >= j) return;
+        std::swap(s[i], s[j]);
+        rev(s, i + 1, j - 1);
+    }
+};
+
+// Comparison:
+//   tmp-swap:    O(n) time, O(1) space, iterative
+//   XOR-swap:    O(n) time, O(1) space, no temp var but 3 reads/writes per pair
+//   recursive:   O(n) time, O(n) stack space (call depth n/2)
+// Edge cases:
+//   - empty vector -> no-op
+//   - single element -> no-op
+//   - even/odd length -> middle element stays in place for odd
+
 int main() {
     vector<char> s = {'h', 'e', 'l', 'l', 'o'};
     SolutionXOR s2;
