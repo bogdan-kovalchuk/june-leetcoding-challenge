@@ -38,6 +38,34 @@ private:
     int total = 0;
 };
 
+class SolutionAlias {
+public:
+    SolutionAlias(vector<int> &w) : n(w.size()), prob(n), alias(n) {
+        vector<double> scaled(n);
+        double sum = 0;
+        for (int x : w) sum += x;
+        for (int i = 0; i < n; ++i) scaled[i] = w[i] * n / sum;
+        std::deque<int> small, large;
+        for (int i = 0; i < n; ++i)
+            (scaled[i] < 1.0 ? small : large).push_back(i);
+        while (!small.empty() && !large.empty()) {
+            int s = small.back(), l = large.back();
+            small.pop_back(); large.pop_back();
+            prob[s] = s; alias[s] = l;
+            scaled[l] -= (1.0 - scaled[s]);
+            (scaled[l] < 1.0 ? small : large).push_back(l);
+        }
+    }
+    int pickIndex() {
+        int idx = std::rand() % n;
+        double r = (double)(std::rand() % 1000) / 1000.0;
+        return r < 1.0 ? prob[idx] : alias[idx];
+    }
+private:
+    int n;
+    vector<int> prob, alias;
+};
+
 int main() {
     vector<int> w = {1, 3};
     SolutionLowerBound obj(w);
