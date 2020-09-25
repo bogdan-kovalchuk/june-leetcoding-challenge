@@ -73,6 +73,11 @@ private:
 //   - large total sum -> rand() % sum may have modulo bias for sum > RAND_MAX
 //   - zero weights -> undefined; problem guarantees w[i] >= 1
 
+// Complexity:
+//   upper_bound:  ctor O(n), pick O(log n)
+//   lower_bound:  ctor O(n), pick O(log n)
+//   alias method: ctor O(n), pick O(1)  — best for many queries
+
 int main() {
     vector<int> w = {1, 3};
     SolutionLowerBound obj(w);
