@@ -66,6 +66,13 @@ private:
     vector<int> prob, alias;
 };
 
+// Edge cases:
+//   - single element w = {5} -> always returns 0
+//   - all weights equal -> uniform distribution
+//   - one dominant weight w = {1, 1000} -> index 1 picked ~99.9%
+//   - large total sum -> rand() % sum may have modulo bias for sum > RAND_MAX
+//   - zero weights -> undefined; problem guarantees w[i] >= 1
+
 int main() {
     vector<int> w = {1, 3};
     SolutionLowerBound obj(w);
