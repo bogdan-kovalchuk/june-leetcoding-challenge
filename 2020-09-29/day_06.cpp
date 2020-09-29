@@ -33,6 +33,15 @@ public:
     }
 };
 
+// Comparison:
+//   sort+insert:  O(n log n) sort + O(n^2) inserts (vector shift) = O(n^2) total
+//   map approach: O(n log n) map ops + O(n^2) inserts = O(n^2) total, more overhead
+// Edge cases:
+//   - all same height -> sorted by k, inserted in order
+//   - all different heights -> tallest first, k=0 for all
+//   - single person -> returned as-is
+//   - invalid input (k >= n) -> undefined; problem guarantees valid input
+
 int main() {
     vector<vector<int>> people = {{7, 0}, {4, 4}, {7, 1}, {5, 0}, {6, 1}, {5, 2}};
     Solution s;
