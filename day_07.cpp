@@ -27,13 +27,31 @@ public:
     }
 };
 
+class Solution1D {
+public:
+    int change(int amount, vector<int> &coins) {
+        vector<int> dp(amount + 1, 0);
+        dp[0] = 1;
+
+        for (const auto &coin : coins) {
+            for (int j = coin; j <= amount; ++j) {
+                dp[j] += dp[j - coin];
+            }
+        }
+
+        return dp[amount];
+    }
+};
+
 
 int main() {
-    int amount = 0;
-    vector<int> coins = {};
+    int amount = 5;
+    vector<int> coins = {1, 2, 5};
 
-    Solution solution = Solution();
-    std::cout << solution.change(amount, coins) << std::endl;
+    Solution solution;
+    Solution1D solution1d;
+    std::cout << "2D:" << solution.change(amount, coins) << std::endl;
+    std::cout << "1D:" << solution1d.change(amount, coins) << std::endl;
 
     return 0;
 }
