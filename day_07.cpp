@@ -43,15 +43,41 @@ public:
     }
 };
 
+// Comparison:
+//   2D DP: O(n*amount) time, O(n*amount) space
+//   1D DP: O(n*amount) time, O(amount) space — same speed, less memory
+// Edge cases:
+//   - amount=0 -> 1 way (use no coins)
+//   - empty coins, amount>0 -> 0 ways
+//   - single coin that divides amount -> 1 way
+//   - coin larger than amount -> skipped
+// Complexity:
+//   Both: time O(coins.size() * amount), 1D space O(amount) vs 2D space O(coins.size() * amount)
 
 int main() {
-    int amount = 5;
-    vector<int> coins = {1, 2, 5};
+    vector<vector<int>> test_coins = {
+        {1, 2, 5},
+        {2},
+        {},
+        {1},
+        {3, 5, 7}
+    };
+    vector<int> test_amounts = {5, 3, 0, 1, 11};
 
     Solution solution;
     Solution1D solution1d;
-    std::cout << "2D:" << solution.change(amount, coins) << std::endl;
-    std::cout << "1D:" << solution1d.change(amount, coins) << std::endl;
+
+    for (size_t i = 0; i < test_coins.size(); ++i) {
+        int r1 = solution.change(test_amounts[i], test_coins[i]);
+        int r2 = solution1d.change(test_amounts[i], test_coins[i]);
+        std::cout << "amount=" << test_amounts[i] << " coins={";
+        for (size_t j = 0; j < test_coins[i].size(); ++j) {
+            if (j) std::cout << ",";
+            std::cout << test_coins[i][j];
+        }
+        std::cout << "} => 2D:" << r1 << " 1D:" << r2;
+        std::cout << (r1 == r2 ? " OK" : " MISMATCH") << std::endl;
+    }
 
     return 0;
 }
