@@ -15,12 +15,21 @@ public:
     }
 };
 
+class SolutionBit {
+public:
+    bool isPowerOfTwo(int n) {
+        return n > 0 && (n & (n - 1)) == 0;
+    }
+};
+
 
 int main() {
     int n = 218;
 
-    Solution solution = Solution();
-    std::cout << solution.isPowerOfTwo(n) << std::endl;
+    Solution solution;
+    SolutionBit solutionBit;
+    std::cout << "loop:" << solution.isPowerOfTwo(n) << std::endl;
+    std::cout << "bit:" << solutionBit.isPowerOfTwo(n) << std::endl;
 
     return 0;
 }
