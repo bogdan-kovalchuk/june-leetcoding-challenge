@@ -45,14 +45,36 @@ public:
     }
 };
 
+// Comparison:
+//   two-pointer:  O(|t|) time, O(1) space — single pass
+//   binary search: O(|t| + |s|*log|t|) time, O(|t|) space — better for many queries on same t
+// Edge cases:
+//   - s empty -> true
+//   - s longer than t -> false
+//   - s == t -> true
+//   - char in s not in t -> false
+//   - all same characters -> works correctly
 
 int main() {
-    string s = "abc", t = "ahbgdc";
+    vector<pair<string, string>> tests = {
+        {"abc", "ahbgdc"},
+        {"axc", "ahbgdc"},
+        {"", "abc"},
+        {"abc", "abc"},
+        {"aaaa", "aabbaa"},
+        {"abc", "ab"}
+    };
 
     Solution solution;
     SolutionBinarySearch solutionBS;
-    std::cout << "two-ptr:" << solution.isSubsequence(s, t) << std::endl;
-    std::cout << "bin-srch:" << solutionBS.isSubsequence(s, t) << std::endl;
+
+    for (const auto &test : tests) {
+        bool r1 = solution.isSubsequence(test.first, test.second);
+        bool r2 = solutionBS.isSubsequence(test.first, test.second);
+        std::cout << "s=\"" << test.first << "\" t=\"" << test.second
+                  << "\" => two-ptr:" << r1 << " bin-srch:" << r2;
+        std::cout << (r1 == r2 ? " OK" : " MISMATCH") << std::endl;
+    }
 
     return 0;
 }
