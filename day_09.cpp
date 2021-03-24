@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <algorithm>
+#include <utility>
 
 
 using std::vector;
@@ -56,7 +57,7 @@ public:
 //   - all same characters -> works correctly
 
 int main() {
-    vector<pair<string, string>> tests = {
+    vector<std::pair<string, string>> tests = {
         {"abc", "ahbgdc"},
         {"axc", "ahbgdc"},
         {"", "abc"},
