@@ -42,20 +42,43 @@ public:
     }
 };
 
+// Comparison:
+//   counting sort:   O(n) time, O(1) space — two passes, stable
+//   dutch flag:      O(n) time, O(1) space — one pass, in-place swaps
+// Edge cases:
+//   - all same color -> no swaps needed (dutch flag) or single bucket (counting)
+//   - already sorted -> both handle correctly
+//   - reverse sorted -> both handle correctly
+//   - single element -> trivial
+//   - two colors only -> both work
+// Complexity:
+//   Both O(n) time, O(1) extra space; dutch flag does fewer writes on average
 
 int main() {
-    vector<int> nums = {2, 0, 2, 1, 1, 0};
+    vector<vector<int>> tests = {
+        {2, 0, 2, 1, 1, 0},
+        {0, 0, 0},
+        {2, 2, 2},
+        {1, 1, 1},
+        {0, 1, 2},
+        {2, 1, 0},
+        {1, 0, 2, 0, 1, 2, 0, 1, 2}
+    };
 
-    Solution solution;
-    solution.sortColors(nums);
-    for (const auto &n : nums) std::cout << n << " ";
-    std::cout << std::endl;
-
-    vector<int> nums2 = {2, 0, 2, 1, 1, 0};
-    SolutionDutchFlag solutionDF;
-    solutionDF.sortColors(nums2);
-    for (const auto &n : nums2) std::cout << n << " ";
-    std::cout << std::endl;
+    for (const auto &test : tests) {
+        vector<int> a = test, b = test;
+        Solution s1;
+        SolutionDutchFlag s2;
+        s1.sortColors(a);
+        s2.sortColors(b);
+        std::cout << "input: ";
+        for (int x : test) std::cout << x << " ";
+        std::cout << "=> count:";
+        for (int x : a) std::cout << x << " ";
+        std::cout << " flag:";
+        for (int x : b) std::cout << x << " ";
+        std::cout << (a == b ? " OK" : " MISMATCH") << std::endl;
+    }
 
     return 0;
 }
