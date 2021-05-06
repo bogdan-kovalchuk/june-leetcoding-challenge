@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
-//#include <random>
 #include <set>
+#include <unordered_map>
+#include <cstdlib>
 
 
 using std::vector;
@@ -9,12 +10,8 @@ using std::set;
 
 class RandomizedSet {
 public:
-    /** Initialize your data structure here. */
-    RandomizedSet() {
+    RandomizedSet() {}
 
-    }
-
-    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
     bool insert(int val) {
         bool retval = false;
         if (s.find(val) == s.end()){
@@ -24,7 +21,6 @@ public:
         return retval;
     }
 
-    /** Removes a value from the set. Returns true if the set contained the specified element. */
     bool remove(int val) {
         bool retval = false;
         if (s.find(val) != s.end()){
@@ -34,7 +30,6 @@ public:
         return retval;
     }
 
-    /** Get a random element from the set. */
     int getRandom() {
         auto it = s.begin();
         int random = std::rand() % s.size();
@@ -45,33 +40,55 @@ private:
     set<int> s;
 };
 
+class RandomizedSetO1 {
+public:
+    bool insert(int val) {
+        if (valToIndex.count(val)) return false;
+        valToIndex[val] = vals.size();
+        vals.push_back(val);
+        return true;
+    }
+
+    bool remove(int val) {
+        if (!valToIndex.count(val)) return false;
+        int idx = valToIndex[val];
+        int last = vals.back();
+        vals[idx] = last;
+        valToIndex[last] = idx;
+        vals.pop_back();
+        valToIndex.erase(val);
+        return true;
+    }
+
+    int getRandom() {
+        return vals[std::rand() % vals.size()];
+    }
+private:
+    vector<int> vals;
+    std::unordered_map<int, int> valToIndex;
+};
+
+// Comparison:
+//   set-based:  insert O(log n), remove O(log n), getRandom O(n) — advance is linear
+//   O(1) set:   insert O(1), remove O(1), getRandom O(1) — swap-with-last trick
+// Edge cases:
+//   - insert duplicate -> false, no change
+//   - remove non-existent -> false
+//   - getRandom on single element -> always returns it
+//   - remove then re-insert -> works correctly
+//   - empty set getRandom -> undefined; problem guarantees non-empty
+// Complexity:
+//   O(1) set uses amortized O(1) via unordered_map + vector swap-remove
 
 int main() {
-    vector<int> nums = {2, 0, 2, 1, 1, 0};
-
-// Init an empty set.
-    RandomizedSet *randomSet = new RandomizedSet();
-
-// Inserts 1 to the set. Returns true as 1 was inserted successfully.
-    randomSet->insert(1);
-
-// Returns false as 2 does not exist in the set.
-    randomSet->remove(2);
-
-// Inserts 2 to the set, returns true. Set now contains [1,2].
-    randomSet->insert(2);
-
-// getRandom should return either 1 or 2 randomly.
-    randomSet->getRandom();
-
-// Removes 1 from the set, returns true. Set now contains [2].
-    randomSet->remove(1);
-
-// 2 was already in the set, so return false.
-    randomSet->insert(2);
-
-// Since 2 is the only number in the set, getRandom always return 2.
-    randomSet->getRandom();
+    RandomizedSetO1 rs;
+    std::cout << "insert 1: " << rs.insert(1) << std::endl;
+    std::cout << "remove 2: " << rs.remove(2) << std::endl;
+    std::cout << "insert 2: " << rs.insert(2) << std::endl;
+    std::cout << "getRandom: " << rs.getRandom() << std::endl;
+    std::cout << "remove 1: " << rs.remove(1) << std::endl;
+    std::cout << "insert 2 dup: " << rs.insert(2) << std::endl;
+    std::cout << "getRandom: " << rs.getRandom() << std::endl;
 
     return 0;
 }
