@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <algorithm>
 
 
 using std::vector;
@@ -37,15 +38,52 @@ public:
     }
 };
 
+class SolutionParentPtr {
+public:
+    vector<int> largestDivisibleSubset(vector<int> &nums) {
+        if (nums.empty()) return {};
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        vector<int> dp(n, 1);
+        vector<int> parent(n, -1);
+        int maxLen = 1, maxIdx = 0;
+
+        for (int i = 1; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (nums[i] % nums[j] == 0 && dp[i] < dp[j] + 1) {
+                    dp[i] = dp[j] + 1;
+                    parent[i] = j;
+                }
+            }
+            if (dp[i] > maxLen) {
+                maxLen = dp[i];
+                maxIdx = i;
+            }
+        }
+
+        vector<int> result;
+        int cur = maxIdx;
+        while (cur != -1) {
+            result.push_back(nums[cur]);
+            cur = parent[cur];
+        }
+        return result;
+    }
+};
+
 
 int main() {
     vector<int> nums = {4, 8, 10, 240};
 
-    Solution solution = Solution();
+    Solution solution;
     auto out = solution.largestDivisibleSubset(nums);
+    for (const auto &n : out) std::cout << n << " ";
+    std::cout << std::endl;
 
-    for (const auto &n : out)
-        std::cout << n << " ";
+    SolutionParentPtr solutionPP;
+    auto out2 = solutionPP.largestDivisibleSubset(nums);
+    for (const auto &n : out2) std::cout << n << " ";
+    std::cout << std::endl;
 
     return 0;
 }
