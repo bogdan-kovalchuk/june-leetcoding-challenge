@@ -75,6 +75,13 @@ public:
 //   Both: O(n^2) time for DP, O(n) space
 //   Original reconstructs by backward scan — may pick wrong elements if dp values repeat
 //   Parent-pointer reconstructs exactly via chain — more reliable, same asymptotic cost
+// Edge cases:
+//   - empty input -> empty result
+//   - single element -> that element alone
+//   - all pairwise divisible (e.g. {1,2,4,8}) -> entire sorted array
+//   - no pair divisible (e.g. {3,5,7}) -> any single element
+//   - duplicates in input -> sort handles, but problem says distinct
+//   - contains 1 -> 1 divides everything, always in largest subset
 
 static bool isDivisibleSubset(const vector<int> &v) {
     for (size_t i = 1; i < v.size(); ++i)
