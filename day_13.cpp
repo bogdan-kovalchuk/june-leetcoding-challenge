@@ -71,19 +71,38 @@ public:
     }
 };
 
+static bool isDivisibleSubset(const vector<int> &v) {
+    for (size_t i = 1; i < v.size(); ++i)
+        for (size_t j = 0; j < i; ++j)
+            if (v[i] % v[j] != 0 && v[j] % v[i] != 0) return false;
+    return true;
+}
 
 int main() {
-    vector<int> nums = {4, 8, 10, 240};
+    vector<vector<int>> tests = {
+        {4, 8, 10, 240},
+        {1, 2, 3},
+        {1, 2, 4, 8},
+        {3, 5, 7},
+        {1},
+        {},
+        {2, 3, 6, 12, 24}
+    };
 
-    Solution solution;
-    auto out = solution.largestDivisibleSubset(nums);
-    for (const auto &n : out) std::cout << n << " ";
-    std::cout << std::endl;
+    Solution s1;
+    SolutionParentPtr s2;
 
-    SolutionParentPtr solutionPP;
-    auto out2 = solutionPP.largestDivisibleSubset(nums);
-    for (const auto &n : out2) std::cout << n << " ";
-    std::cout << std::endl;
+    for (const auto &test : tests) {
+        vector<int> a = test, b = test;
+        auto r1 = s1.largestDivisibleSubset(a);
+        auto r2 = s2.largestDivisibleSubset(b);
+        std::cout << "size=" << test.size()
+                  << " => orig:" << r1.size() << " parent:" << r2.size()
+                  << " valid1:" << isDivisibleSubset(r1)
+                  << " valid2:" << isDivisibleSubset(r2)
+                  << (r1.size() == r2.size() ? " OK" : " SIZE_DIFF")
+                  << std::endl;
+    }
 
     return 0;
 }
