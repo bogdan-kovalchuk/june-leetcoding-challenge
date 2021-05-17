@@ -71,6 +71,11 @@ public:
     }
 };
 
+// Complexity:
+//   Both: O(n^2) time for DP, O(n) space
+//   Original reconstructs by backward scan — may pick wrong elements if dp values repeat
+//   Parent-pointer reconstructs exactly via chain — more reliable, same asymptotic cost
+
 static bool isDivisibleSubset(const vector<int> &v) {
     for (size_t i = 1; i < v.size(); ++i)
         for (size_t j = 0; j < i; ++j)
